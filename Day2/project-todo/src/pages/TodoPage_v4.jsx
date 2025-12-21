@@ -1,14 +1,19 @@
 // todoPage_v3
 import { useState } from "react";
 import Card from "./Card";
-function TodoPage_Basic(){
-    const [inputValue, setInputValue] = useState("");
+function TodoPage_v4(){
+    const [title, setTitle] = useState("");
+    const [desc, setDesc] = useState("");
     const [items,setItems] =useState([]);
     const handleAdd= ()=>{
-        if ( inputValue.trim() !=""){
-            items.push(inputValue.trim());
+        if ( title.trim() !=""&& desc.trim() !=""){
+            items.push({
+                title : title,
+                desc: desc
+            });
             setItems([...items]);
-            setInputValue("");
+            setTitle("");
+            setDesc("");
         }
     }
     const handleDelete=function (idx) {
@@ -22,11 +27,12 @@ function TodoPage_Basic(){
     }
     function handleEdit(idx){
         let newValue =prompt("Enter New Title");
-        if ( newValue!=null && newValue.trim()!=""){
+        let newDesc=prompt("Enter the new Description");
+        if ( newValue!=null && newValue.trim()!="" && newDesc!=null && newDesc.trim()!=""){
             let temp=[];
             for (let i=0;i<items.length;i++){
                    if(i==idx)
-                        temp.push(newValue);
+                        temp.push({title: newValue,desc:newDesc});
                    else 
                         temp.push(items[i]);
             }
@@ -39,13 +45,23 @@ function TodoPage_Basic(){
         <>
            <main className=" font-mono  min-h-screen w-screen   flex flex-col  justify-center items-center  shadow-md shadow-amber-300">
                 <h1 className="text-red-500 uppercase">To do Application</h1>
-                <section className="">
+                <section className="flex flex-col justify-center gap-2">
                     <input 
-                        className="bg-zinc-300 border-amber-200 "
+                        className="bg-black border-amber-200 "
                         type="text" 
-                        value={inputValue} 
-                        onChange={(e)=> setInputValue(e.target.value)}
+                        value={title} 
+                        onChange={(e)=> setTitle(e.target.value)}
+                        placeholder="Enter the Title"
                     />
+                    <textarea 
+                        rows={5}
+                        className="bg-black border-amber-200 "
+                        type="text" 
+                        value={desc} 
+                        onChange={(e)=> setDesc(e.target.value)}
+                        placeholder="Enter Description"
+                    >
+                    </textarea>
                     <button 
                     className="bg-green-700 text-white "
                     onClick={handleAdd}> Add </button>
@@ -56,7 +72,8 @@ function TodoPage_Basic(){
                              return <Card 
                                 id={index+1} 
                                 key={index} 
-                                title={value}
+                                title={value.title}
+                                desc={value.desc}
                                 handleDelBtn={handleDelete}
                                 handleEditBtn={handleEdit}
                              />
@@ -67,4 +84,4 @@ function TodoPage_Basic(){
         </>
     );
 }
-export default  TodoPage_Basic;
+export default  TodoPage_v4;
